@@ -7,6 +7,18 @@
 | v3.7 | 2025年11月16日 | メジャーリリース |
 | v3.8 | 2025年12月14日 | メジャーリリース |
 
+## 評価環境の制約条件
+
+> **重要**: 本分析において、以下の制約条件により一部機能は評価対象外となります。
+> 評価対象外の項目には ~~取り消し線~~ または「⛔ 評価対象外」を付記しています。
+
+| カテゴリ | 評価対象 | 評価対象外 |
+|----------|----------|------------|
+| **クラウドサービス** | Google Workspace | Microsoft 365 |
+| **デバイス/OS** | macOS, Linux | Windows |
+| **機密データ検出地域** | 英語圏, 日本 | UAE, ブラジル, その他 |
+| **言語** | 英語, 日本語 | フランス語, その他 |
+
 ---
 
 # Part 1: v3.7 リリースノート分析
@@ -14,6 +26,9 @@
 ## 1. 新機能一覧
 
 ### 1.1 Coro Console（管理コンソール）
+
+> **参考**: Actionboard redesignの実際の画面は以下を参照
+> ![Actionboard Dashboard](../../img/actionboard-dashboard.png)
 
 | 機能ID | 機能名 | 説明 | 影響範囲 |
 |--------|--------|------|----------|
@@ -31,10 +46,10 @@
 
 ### 1.3 Endpoint Security（エンドポイントセキュリティ）
 
-| 機能ID | 機能名 | 説明 | 影響範囲 |
-|--------|--------|------|----------|
-| 3.1 | Remote Agent uninstallation | WindowsデバイスのリモートAgentアンインストール | デバイス管理 |
-| 3.2 | USB Lockdown allowlisting | シリアル番号によるUSBデバイス許可リスト | デバイスポリシー |
+| 機能ID | 機能名 | 説明 | 影響範囲 | 評価可否 |
+|--------|--------|------|----------|----------|
+| 3.1 | Remote Agent uninstallation | WindowsデバイスのリモートAgentアンインストール | デバイス管理 | ⛔ 対象外（Windows） |
+| 3.2 | USB Lockdown allowlisting | シリアル番号によるUSBデバイス許可リスト | デバイスポリシー | ✅ 評価対象 |
 
 ### 1.4 Network and SWG（ネットワーク/SWG）
 
@@ -48,6 +63,9 @@
 
 ### 1.5 Email Security（メールセキュリティ）
 
+> **参考**: 通知設定画面でPrompt Injectionが確認できます
+> ![Notification Settings - Threat Types](../../img/notification-settings-threat-types.png)
+
 | 機能ID | 機能名 | 説明 | 影響範囲 |
 |--------|--------|------|----------|
 | 5.1 | Prompt injection detection | メール内のAIプロンプトインジェクション検知 | **重要** AIセキュリティ |
@@ -56,11 +74,11 @@
 
 ### 1.6 Data Governance（データガバナンス）
 
-| 機能ID | 機能名 | 説明 | 影響範囲 |
-|--------|--------|------|----------|
-| 6.1 | Unified ticket - Cloud/Email | クラウド共有・メールの機密データチケット統合 | チケット管理 |
-| 6.2 | Unified ticket - Endpoint | エンドポイントドライブスキャンの機密データチケット統合 | チケット管理 |
-| 6.3 | UAE sensitive data detection | UAE固有の機密データ検出（ID、パスポート等5種類） | コンプライアンス |
+| 機能ID | 機能名 | 説明 | 影響範囲 | 評価可否 |
+|--------|--------|------|----------|----------|
+| 6.1 | Unified ticket - Cloud/Email | クラウド共有・メールの機密データチケット統合 | チケット管理 | ✅ 評価対象 |
+| 6.2 | Unified ticket - Endpoint | エンドポイントドライブスキャンの機密データチケット統合 | チケット管理 | ✅ 評価対象 |
+| 6.3 | UAE sensitive data detection | UAE固有の機密データ検出（ID、パスポート等5種類） | コンプライアンス | ⛔ 対象外（UAE地域） |
 
 ### 1.7 MDM（モバイルデバイス管理）
 
@@ -84,9 +102,9 @@
 
 ### 2.2 Coro Console
 
-| 項目 | 内容 |
-|------|------|
-| French (Canada) support | フランス語（カナダ）のUI対応追加 |
+| 項目 | 内容 | 評価可否 |
+|------|------|----------|
+| French (Canada) support | フランス語（カナダ）のUI対応追加 | ⛔ 対象外（フランス語） |
 
 ### 2.3 EDR
 
@@ -114,15 +132,15 @@
 
 ## 3. 修正された問題（Fixed Issues）
 
-| 問題 | 修正内容 |
-|------|----------|
-| Activity Log Undo action | デバイス保護無効化時のUndoアクション追加 |
-| User aliases sync | Microsoft 365/Google Workspaceのエイリアス同期 |
-| Reported by User tickets | 保護ユーザー状態の正しい表示 |
+| 問題 | 修正内容 | 評価可否 |
+|------|----------|----------|
+| Activity Log Undo action | デバイス保護無効化時のUndoアクション追加 | ✅ 評価対象 |
+| User aliases sync | Microsoft 365/Google Workspaceのエイリアス同期 | ✅ 評価対象（Google Workspaceのみ） |
+| Reported by User tickets | 保護ユーザー状態の正しい表示 | ✅ 評価対象 |
 
 ## 4. エージェント更新
 
-### 4.1 Linux Agent 3.7
+### 4.1 Linux Agent 3.7 ✅ 評価対象
 
 | 機能 | 説明 |
 |------|------|
@@ -130,7 +148,7 @@
 | Remote shell | リモートシェルアクセス |
 | Bug fixes | 一般的なバグ修正 |
 
-### 4.2 macOS Agent 3.7
+### 4.2 macOS Agent 3.7 ✅ 評価対象
 
 | 機能 | 説明 |
 |------|------|
@@ -138,14 +156,16 @@
 | Optimized performance | EDR/オンアクセススキャンの性能最適化 |
 | Bug fixes | 一般的なバグ修正 |
 
-### 4.3 Windows Agent 3.7
+### 4.3 Windows Agent 3.7 ⛔ 評価対象外
+
+> **注意**: Windows環境が利用できないため、本セクションは評価対象外です。
 
 | 機能 | 説明 |
 |------|------|
-| Remote uninstallation | リモートアンインストールサポート |
-| Optimized scan | 起動時スキャン性能改善 |
-| Enhanced malware reporting | コンテナファイル内マルウェアの親コンテナ報告 |
-| Bug fixes | 一般的なバグ修正 |
+| ~~Remote uninstallation~~ | ~~リモートアンインストールサポート~~ |
+| ~~Optimized scan~~ | ~~起動時スキャン性能改善~~ |
+| ~~Enhanced malware reporting~~ | ~~コンテナファイル内マルウェアの親コンテナ報告~~ |
+| ~~Bug fixes~~ | ~~一般的なバグ修正~~ |
 
 ---
 
@@ -167,9 +187,9 @@
 
 ### 1.2 Cloud Security（クラウドセキュリティ）
 
-| 機能ID | 機能名 | 説明 | 影響範囲 |
-|--------|--------|------|----------|
-| 2.1 | MFA status detection | Microsoft 365/Google WorkspaceのMFA状態検出・表示 | **重要** セキュリティ監視 |
+| 機能ID | 機能名 | 説明 | 影響範囲 | 評価可否 |
+|--------|--------|------|----------|----------|
+| 2.1 | MFA status detection | Microsoft 365/Google WorkspaceのMFA状態検出・表示 | **重要** セキュリティ監視 | ✅ 評価対象（Google Workspaceのみ） |
 
 ### 1.3 Email Security（メールセキュリティ）
 
@@ -179,9 +199,9 @@
 
 ### 1.4 Data Governance（データガバナンス）
 
-| 機能ID | 機能名 | 説明 | 影響範囲 |
-|--------|--------|------|----------|
-| 4.1 | Brazil sensitive data detection | ブラジル固有の機密データ検出（CPF、パスポート等5種類） | コンプライアンス |
+| 機能ID | 機能名 | 説明 | 影響範囲 | 評価可否 |
+|--------|--------|------|----------|----------|
+| 4.1 | Brazil sensitive data detection | ブラジル固有の機密データ検出（CPF、パスポート等5種類） | コンプライアンス | ⛔ 対象外（ブラジル地域） |
 
 ### 1.5 Security Awareness Training（セキュリティ意識向上トレーニング）
 
@@ -226,26 +246,26 @@
 
 ### 1.2 認証・アクセス制御
 
-| バージョン | 機能 | 重要度 |
-|------------|------|--------|
-| v3.8 | MFA状態検出（Microsoft 365/Google Workspace） | **高** |
-| v3.7 | Threat detection policies | 高 |
+| バージョン | 機能 | 重要度 | 評価可否 |
+|------------|------|--------|----------|
+| v3.8 | MFA状態検出（Google Workspace） | **高** | ✅ 評価対象 |
+| v3.7 | Threat detection policies | 高 | ✅ 評価対象 |
 
 ### 1.3 データ保護・コンプライアンス
 
-| バージョン | 機能 | 重要度 |
-|------------|------|--------|
-| v3.7 | UAE機密データ検出 | 中 |
-| v3.8 | ブラジル機密データ検出 | 中 |
-| v3.7 | 統合チケット（機密データ） | 中 |
+| バージョン | 機能 | 重要度 | 評価可否 |
+|------------|------|--------|----------|
+| v3.7 | UAE機密データ検出 | 中 | ⛔ 対象外 |
+| v3.8 | ブラジル機密データ検出 | 中 | ⛔ 対象外 |
+| v3.7 | 統合チケット（機密データ） | 中 | ✅ 評価対象 |
 
 ### 1.4 デバイス管理
 
-| バージョン | 機能 | 重要度 |
-|------------|------|--------|
-| v3.7 | Remote Agent uninstallation（Windows） | 中 |
-| v3.7 | USB Lockdown allowlisting | 中 |
-| v3.8 | Agent health filter | 低 |
+| バージョン | 機能 | 重要度 | 評価可否 |
+|------------|------|--------|----------|
+| v3.7 | Remote Agent uninstallation（Windows） | 中 | ⛔ 対象外 |
+| v3.7 | USB Lockdown allowlisting | 中 | ✅ 評価対象 |
+| v3.8 | Agent health filter | 低 | ✅ 評価対象 |
 
 ### 1.5 ネットワークセキュリティ
 
@@ -313,24 +333,47 @@
 
 ## 2. 重点評価項目（v3.7/v3.8）
 
+> **注意**: 評価環境の制約条件に基づき、評価対象を更新しています。
+
 ### 最高優先度
 
-1. **Prompt injection detection** - AIセキュリティの新しい脅威
-2. **MFA status detection** - 基本的なセキュリティ姿勢の可視化
+1. **Prompt injection detection** - AIセキュリティの新しい脅威 ✅
+2. **MFA status detection（Google Workspace）** - 基本的なセキュリティ姿勢の可視化 ✅
 
 ### 高優先度
 
-3. **Threat detection policies** - 新しい検知タイプ
-4. **Shadow AI blocklist** - 生成AI利用制御
-5. **Security gaps detection** - セキュリティ姿勢の改善
+3. **Threat detection policies** - 新しい検知タイプ ✅
+4. **Shadow AI blocklist** - 生成AI利用制御 ✅
+5. **Security gaps detection** - セキュリティ姿勢の改善 ✅
 
 ### 中優先度
 
-6. **Unified ticket consolidation** - 運用効率化
-7. **Remote Agent uninstallation** - デバイス管理
-8. **Setup Hub onboarding** - 初期導入
+6. **Unified ticket consolidation** - 運用効率化 ✅
+7. ~~**Remote Agent uninstallation**~~ - ~~デバイス管理~~ ⛔（Windows機能のため対象外）
+8. **Setup Hub onboarding** - 初期導入 ✅
+
+### 追加評価項目（macOS/Linux特化）
+
+9. **macOS Agent 3.7** - スケジュールスキャン、EDR性能最適化 ✅
+10. **Linux Agent 3.7** - 保護無効化、リモートシェル ✅
+11. **Remote shell for Linux（v3.8）** - Linuxリモート管理 ✅
+
+---
+
+## 付録: 評価対象外項目一覧
+
+| カテゴリ | 項目 | 除外理由 |
+|----------|------|----------|
+| エージェント | Windows Agent 3.7 全機能 | Windows環境なし |
+| Endpoint Security | Remote Agent uninstallation | Windows専用機能 |
+| Data Governance | UAE機密データ検出 | 対象地域外 |
+| Data Governance | ブラジル機密データ検出 | 対象地域外 |
+| 言語 | French (Canada) support | 対象言語外 |
+| Cloud Security | Microsoft 365関連機能 | M365環境なし |
 
 ---
 
 *作成日: 2026-01-22*
+*最終更新: 2026-01-22（制約条件追加）*
 *分析対象: v3.7 (2025-11-16), v3.8 (2025-12-14)*
+*ドキュメントバージョン: 1.1*

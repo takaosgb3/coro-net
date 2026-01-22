@@ -6,9 +6,23 @@
 |------|------|
 | **文書名** | Coro Cybersecurity v3.7/v3.8 評価計画書 |
 | **作成日** | 2026年1月22日 |
+| **更新日** | 2026年1月22日 |
 | **対象バージョン** | v3.7 (2025-11-16), v3.8 (2025-12-14) |
 | **対象URL** | https://www.coro.net/ |
 | **文書URL** | https://docs.coro.net/rn/major-3.7, https://docs.coro.net/rn/major-3.8 |
+
+---
+
+## 評価環境の制約条件
+
+> **重要**: 本評価は以下の制約条件の下で実施します。
+
+| カテゴリ | 利用可能 | 利用不可 |
+|----------|----------|----------|
+| **クラウドサービス** | Google Workspace | Microsoft 365 |
+| **デバイス** | macOS, Linux | Windows |
+| **機密データ検出** | 英語圏, 日本 | UAE, ブラジル, その他地域 |
+| **言語** | 英語, 日本語 | フランス語, その他言語 |
 
 ---
 
@@ -34,14 +48,16 @@ Coro Cybersecurityプラットフォームのv3.7およびv3.8でリリースさ
 │  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐            │
 │  │   v3.7      │  │   v3.8      │  │  共通基盤   │            │
 │  │  新機能     │  │  新機能     │  │  機能       │            │
-│  │  (27項目)   │  │  (13項目)   │  │             │            │
 │  └─────────────┘  └─────────────┘  └─────────────┘            │
 │                                                                 │
 │  【対象モジュール】                                              │
 │  - Coro Console    - Cloud Security   - Email Security          │
 │  - Endpoint Security  - EDR           - Network/SWG             │
 │  - Data Governance    - MDM           - SAT                     │
-│  - Coro AI            - Agent (Windows/macOS/Linux)             │
+│  - Coro AI            - Agent (macOS/Linux)                     │
+│                                                                 │
+│  【対象クラウドサービス】                                         │
+│  - Google Workspace のみ                                        │
 │                                                                 │
 └─────────────────────────────────────────────────────────────────┘
 ```
@@ -52,6 +68,10 @@ Coro Cybersecurityプラットフォームのv3.7およびv3.8でリリースさ
 - バグ修正の詳細検証（修正確認のみ実施）
 - パフォーマンス負荷テスト
 - ペネトレーションテスト
+- **Microsoft 365関連機能**（環境制約）
+- **Windows Agent関連機能**（環境制約）
+- **UAE/ブラジル機密データ検出**（要件外）
+- **フランス語等の多言語機能**（要件外）
 
 ---
 
@@ -81,7 +101,7 @@ Coro Cybersecurityプラットフォームのv3.7およびv3.8でリリースさ
 │   │   ├── 設定管理
 │   │   └── ユーザー管理
 │   ├── 2.2 デバイス管理
-│   │   ├── エージェント管理
+│   │   ├── エージェント管理（macOS/Linux）
 │   │   ├── リモート操作
 │   │   └── ポリシー適用
 │   └── 2.3 MSP機能
@@ -91,7 +111,7 @@ Coro Cybersecurityプラットフォームのv3.7およびv3.8でリリースさ
 │
 ├── 3. コンプライアンス機能評価
 │   ├── 3.1 データ保護
-│   │   ├── 機密データ検出
+│   │   ├── 機密データ検出（英語圏/日本）
 │   │   ├── DLP機能
 │   │   └── 暗号化
 │   ├── 3.2 監査・証跡
@@ -99,17 +119,14 @@ Coro Cybersecurityプラットフォームのv3.7およびv3.8でリリースさ
 │   │   ├── 変更履歴
 │   │   └── レポート出力
 │   └── 3.3 地域対応
-│       ├── 各国データ形式
-│       └── 言語対応
+│       └── 言語対応（英語/日本語）
 │
 └── 4. 統合・連携機能評価
     ├── 4.1 クラウドサービス連携
-    │   ├── Microsoft 365
     │   └── Google Workspace
     ├── 4.2 API機能
     │   └── Public API
     └── 4.3 エージェント連携
-        ├── Windows Agent
         ├── macOS Agent
         └── Linux Agent
 ```
@@ -132,7 +149,7 @@ Coro Cybersecurityプラットフォームのv3.7およびv3.8でリリースさ
 
 ```
 1. 準備
-   - テスト用メールアカウント設定
+   - Google Workspaceテスト用メールアカウント設定
    - Email Security有効化確認
 
 2. テストケース
@@ -159,20 +176,21 @@ Coro Cybersecurityプラットフォームのv3.7およびv3.8でリリースさ
 
 | 評価ID | 評価項目 | 対象バージョン | 優先度 | 評価内容 |
 |--------|----------|----------------|--------|----------|
-| SEC-AUTH-001 | MFA Status Detection | v3.8 | **最高** | Microsoft 365/Google WorkspaceのMFA状態検出精度 |
+| SEC-AUTH-001 | MFA Status Detection (Google Workspace) | v3.8 | **最高** | Google WorkspaceのMFA状態検出精度 |
 | SEC-AUTH-002 | Threat Detection Policies | v3.7 | 高 | 新しい脅威検知タイプの動作確認 |
 
-**SEC-AUTH-001 詳細評価手順**
+> **注意**: Microsoft 365は環境制約により評価対象外
+
+**SEC-AUTH-001 詳細評価手順（Google Workspace）**
 
 ```
 1. 前提条件
-   - Microsoft 365連携設定済み
-   - UserAuthenticationMethod.Read.All権限付与済み
    - Google Workspace連携設定済み
+   - 管理者権限でCoro連携承認済み
 
 2. テストケース
    TC-001: MFA有効ユーザーの検出
-   - MFA設定済みユーザーでログイン
+   - Google Workspace上でMFA設定済みユーザーを準備
    - Protected Usersページで"MFA enabled"ラベル確認
 
    TC-002: MFA無効ユーザーの検出
@@ -180,7 +198,8 @@ Coro Cybersecurityプラットフォームのv3.7およびv3.8でリリースさ
    - "MFA not enabled"ラベル確認
 
    TC-003: MFA状態変更の反映
-   - MFA状態を変更後、反映タイミング確認
+   - Google Workspace上でMFA状態を変更
+   - Coro側への反映タイミング確認
 
    TC-004: フィルタリング機能
    - MFA状態によるユーザーフィルタ動作確認
@@ -201,6 +220,8 @@ Coro Cybersecurityプラットフォームのv3.7およびv3.8でリリースさ
 | Mass Data Download | 大量ダウンロードの検知 | 閾値超過のダウンロードテスト |
 | Suspected Bot Attack | ボット攻撃の検知 | 自動化パターンのシミュレーション |
 | Suspected Identity Compromise | ID侵害の検知 | 異常ログインパターンのシミュレーション |
+
+> **注意**: 上記テストはGoogle Workspace環境で実施
 
 ---
 
@@ -245,36 +266,64 @@ Coro Cybersecurityプラットフォームのv3.7およびv3.8でリリースさ
 
 | 評価ID | 評価項目 | 対象バージョン | 優先度 | 評価内容 |
 |--------|----------|----------------|--------|----------|
-| MGT-DEV-001 | Remote Agent Uninstallation | v3.7 | 高 | Windowsデバイスのリモートアンインストール |
-| MGT-DEV-002 | USB Lockdown Allowlisting | v3.7 | 中 | シリアル番号による許可リスト |
-| MGT-DEV-003 | Agent Health Filter | v3.8 | 低 | エージェント健全性フィルタ |
-| MGT-DEV-004 | Remote Shell (Linux) | v3.7/v3.8 | 高 | Linuxリモートシェルアクセス |
+| MGT-DEV-001 | Agent Health Filter | v3.8 | 中 | エージェント健全性フィルタ（macOS/Linux） |
+| MGT-DEV-002 | Remote Shell (Linux) | v3.7/v3.8 | **高** | Linuxリモートシェルアクセス |
+| MGT-DEV-003 | Scheduled Malware Scan (macOS) | v3.7 | 高 | macOSスケジュールスキャン |
+| MGT-DEV-004 | Disable Protection (Linux) | v3.7 | 中 | Linux保護の無効化サポート |
 
-**MGT-DEV-001 詳細評価手順**
+> **注意**: Windows関連機能（Remote Agent Uninstallation、USB Lockdown Allowlisting）は環境制約により評価対象外
+
+**MGT-DEV-002 詳細評価手順（Remote Shell - Linux）**
 
 ```
 1. 前提条件
-   - Windows Agent 3.7以降インストール済み
+   - Linux Agent 3.7以降インストール済み
    - デバイスがオンライン状態
+   - リモートシェル権限が付与済み
 
 2. テストケース
-   TC-001: 正常なリモートアンインストール
-   - Coro Consoleからアンインストール実行
-   - デバイス上でのAgent削除確認
+   TC-001: 正常なリモートシェル接続
+   - Coro Consoleからリモートシェル開始
+   - 基本コマンド実行確認（ls, pwd, cat等）
 
-   TC-002: オフラインデバイスへの指示
-   - オフラインデバイスにアンインストール指示
-   - オンライン復帰後の実行確認
+   TC-002: セッション管理
+   - セッションタイムアウト確認
+   - 複数セッションの挙動確認
 
-   TC-003: アンインストール後の再インストール
-   - アンインストール後に再度Agentインストール
-   - 正常動作確認
+   TC-003: 権限制御
+   - 実行可能なコマンドの制限確認
+   - 危険なコマンドのブロック確認
 
 3. 評価観点
-   - 実行の信頼性
-   - 完了までの時間
-   - エラー時の挙動
+   - 接続の安定性
+   - コマンド実行のレスポンス
+   - セキュリティ制御の適切性
    - 監査ログの記録
+```
+
+**MGT-DEV-003 詳細評価手順（Scheduled Malware Scan - macOS）**
+
+```
+1. 前提条件
+   - macOS Agent 3.7以降インストール済み
+   - スケジュールスキャン設定権限
+
+2. テストケース
+   TC-001: スケジュール設定
+   - 日次/週次スキャンの設定
+   - スケジュール通りの実行確認
+
+   TC-002: スキャン実行
+   - スキャン開始・完了の確認
+   - 検出時のチケット作成確認
+
+   TC-003: パフォーマンス影響
+   - スキャン中のシステム負荷確認
+
+3. 評価観点
+   - スケジュールの正確性
+   - スキャン完了率
+   - システムへの影響度
 ```
 
 ---
@@ -285,29 +334,35 @@ Coro Cybersecurityプラットフォームのv3.7およびv3.8でリリースさ
 
 | 評価ID | 評価項目 | 対象バージョン | 優先度 | 評価内容 |
 |--------|----------|----------------|--------|----------|
-| CMP-DATA-001 | UAE Sensitive Data | v3.7 | 中 | UAE固有データタイプの検出精度 |
-| CMP-DATA-002 | Brazil Sensitive Data | v3.8 | 中 | ブラジル固有データタイプの検出精度 |
+| CMP-DATA-001 | 英語圏機密データ検出 | 既存 | 高 | SSN、クレジットカード等の検出精度 |
+| CMP-DATA-002 | 日本機密データ検出 | 既存 | **高** | マイナンバー、運転免許証番号等の検出精度 |
 | CMP-DATA-003 | Unified Ticket Consolidation | v3.7 | 中 | 機密データチケットの統合表示 |
 
-**CMP-DATA-001 詳細評価手順**
+> **注意**: UAE機密データ、ブラジル機密データは要件外のため評価対象外
+
+**CMP-DATA-002 詳細評価手順（日本機密データ）**
 
 ```
 1. テストデータ準備
-   - UAE ID Number（15桁数字）
-   - UAE UID Number
-   - UAE Visa File Number
-   - UAE Passport Number
-   - UAE Driver's License Number
+   - マイナンバー（12桁数字）
+   - 運転免許証番号
+   - パスポート番号
+   - 健康保険証番号
+   - 銀行口座番号
 
 2. テストケース
    TC-001: 各データタイプの検出
-   - テストファイルにUAEデータ記載
-   - クラウドストレージにアップロード
+   - テストファイルに日本の機密データ記載
+   - Google Driveにアップロード
    - 検出・チケット作成確認
 
    TC-002: 誤検知確認
-   - 類似パターンの非機密データ
+   - 類似パターンの非機密データ（電話番号等）
    - 検出されないことを確認
+
+   TC-003: メール内検出
+   - Gmail経由で機密データを含むメール送信
+   - 検出動作確認
 
 3. 評価観点
    - 検出率
@@ -316,12 +371,35 @@ Coro Cybersecurityプラットフォームのv3.7およびv3.8でリリースさ
    - チケット情報の正確性
 ```
 
-#### 3.3.2 言語・地域対応
+**CMP-DATA-001 詳細評価手順（英語圏機密データ）**
+
+```
+1. テストデータ準備
+   - Social Security Number (SSN)
+   - クレジットカード番号
+   - 銀行口座番号（米国/英国形式）
+   - パスポート番号
+
+2. テストケース
+   TC-001: 各データタイプの検出
+   - テストファイルに英語圏の機密データ記載
+   - Google Driveにアップロード
+   - 検出・チケット作成確認
+
+3. 評価観点
+   - 検出率
+   - 誤検知率
+   - 検出までの時間
+```
+
+#### 3.3.2 言語対応
 
 | 評価ID | 評価項目 | 対象バージョン | 優先度 | 評価内容 |
 |--------|----------|----------------|--------|----------|
-| CMP-LOC-001 | French (Canada) Support | v3.7 | 低 | コンソールのフランス語（カナダ）表示 |
-| CMP-LOC-002 | SAT Multi-language | v3.8 | 中 | トレーニング/シミュレーションの多言語対応 |
+| CMP-LOC-001 | 英語UI | 既存 | 高 | コンソールの英語表示 |
+| CMP-LOC-002 | 日本語対応確認 | - | 中 | 日本語UIの有無・品質確認 |
+
+> **注意**: フランス語（カナダ）、SAT多言語対応は要件外のため評価対象外
 
 ---
 
@@ -331,17 +409,94 @@ Coro Cybersecurityプラットフォームのv3.7およびv3.8でリリースさ
 
 | 評価ID | 評価項目 | 対象バージョン | 優先度 | 評価内容 |
 |--------|----------|----------------|--------|----------|
-| INT-CLOUD-001 | M365 MFA Integration | v3.8 | **最高** | Microsoft 365との権限・MFA連携 |
-| INT-CLOUD-002 | GWS MFA Integration | v3.8 | 高 | Google WorkspaceとのMFA連携 |
-| INT-CLOUD-003 | Disconnected Status | v3.7 | 中 | 権限不足時の接続状態表示 |
+| INT-CLOUD-001 | Google Workspace MFA Integration | v3.8 | **最高** | Google WorkspaceとのMFA連携 |
+| INT-CLOUD-002 | Google Workspace Connection | v3.7 | 高 | 権限不足時の接続状態表示 |
+| INT-CLOUD-003 | Google Drive DLP | 既存 | 高 | Google Driveファイルの機密データ検出 |
+| INT-CLOUD-004 | Gmail Protection | 既存 | 高 | Gmailのメールセキュリティ |
+
+> **注意**: Microsoft 365関連機能は環境制約により評価対象外
+
+**INT-CLOUD-001 詳細評価手順（Google Workspace MFA）**
+
+```
+1. 前提条件
+   - Google Workspace管理者権限
+   - Coro連携設定完了
+
+2. テストケース
+   TC-001: MFA状態の正確な取得
+   - MFA有効/無効ユーザーの状態確認
+   - Protected Usersページでの表示確認
+
+   TC-002: 状態変更の反映
+   - Google Workspace上でMFA設定変更
+   - Coroへの反映時間測定
+
+   TC-003: フィルター機能
+   - MFA状態でのユーザーフィルタリング
+
+3. 評価観点
+   - 連携の安定性
+   - 状態反映の正確性
+   - 更新頻度の適切性
+```
 
 #### 3.4.2 エージェント機能
 
 | 評価ID | 評価項目 | 対象バージョン | 優先度 | 評価内容 |
 |--------|----------|----------------|--------|----------|
-| INT-AGT-001 | Windows Agent 3.7 | v3.7 | 高 | リモートアンインストール、スキャン最適化 |
-| INT-AGT-002 | macOS Agent 3.7 | v3.7 | 中 | スケジュールスキャン、EDR最適化 |
-| INT-AGT-003 | Linux Agent 3.7 | v3.7 | 高 | 保護無効化、リモートシェル |
+| INT-AGT-001 | macOS Agent 3.7 | v3.7 | **高** | スケジュールスキャン、EDR最適化 |
+| INT-AGT-002 | Linux Agent 3.7 | v3.7 | **高** | 保護無効化、リモートシェル |
+
+> **注意**: Windows Agent 3.7は環境制約により評価対象外
+
+**INT-AGT-001 詳細評価手順（macOS Agent 3.7）**
+
+```
+1. 前提条件
+   - macOS 最新版
+   - Agent 3.7インストール済み
+
+2. テストケース
+   TC-001: スケジュールマルウェアスキャン
+   - スケジュール設定・実行確認
+
+   TC-002: EDRパフォーマンス最適化
+   - EDR有効時のシステム負荷測定
+   - v3.6以前との比較（可能な場合）
+
+   TC-003: オンアクセススキャン
+   - ファイル操作時のスキャン動作確認
+
+3. 評価観点
+   - 機能の正常動作
+   - システムリソース使用量
+   - ユーザー体験への影響
+```
+
+**INT-AGT-002 詳細評価手順（Linux Agent 3.7）**
+
+```
+1. 前提条件
+   - Ubuntu/RHEL最新版
+   - Agent 3.7インストール済み
+
+2. テストケース
+   TC-001: 保護無効化機能
+   - Coroコンソールから保護無効化
+   - 無効化状態の確認
+   - 再有効化の確認
+
+   TC-002: リモートシェル機能
+   - コンソールからのリモート接続
+   - コマンド実行
+   - セッション管理
+
+3. 評価観点
+   - 機能の正常動作
+   - セキュリティ制御
+   - 監査ログの記録
+```
 
 ---
 
@@ -352,25 +507,28 @@ Coro Cybersecurityプラットフォームのv3.7およびv3.8でリリースさ
 ```
 Phase 1: 環境準備・基礎確認（推奨期間: 1週間）
 ├── 評価環境構築
-├── テストアカウント・デバイス準備
+│   ├── Google Workspace設定
+│   ├── macOS/Linuxデバイス準備
+│   └── Coroワークスペース設定
+├── テストアカウント準備
 ├── 基本機能確認
 └── テストデータ準備
 
 Phase 2: セキュリティ機能評価（推奨期間: 2週間）
 ├── AI/ML関連脅威検知テスト
-├── 認証・アクセス制御テスト
+├── MFA状態検出テスト（Google Workspace）
 ├── 脅威検知ポリシーテスト
 └── 保護機能テスト
 
 Phase 3: 管理機能評価（推奨期間: 1週間）
 ├── コンソール機能テスト
-├── デバイス管理テスト
+├── デバイス管理テスト（macOS/Linux）
 └── MSP機能テスト
 
 Phase 4: コンプライアンス・統合評価（推奨期間: 1週間）
-├── 機密データ検出テスト
-├── クラウドサービス連携テスト
-└── エージェント機能テスト
+├── 機密データ検出テスト（英語圏/日本）
+├── Google Workspace連携テスト
+└── エージェント機能テスト（macOS/Linux）
 
 Phase 5: 総合評価・報告書作成（推奨期間: 1週間）
 ├── 結果集計・分析
@@ -383,13 +541,15 @@ Phase 5: 総合評価・報告書作成（推奨期間: 1週間）
 | 優先度 | 評価項目 | Phase | 理由 |
 |--------|----------|-------|------|
 | **最高** | Prompt Injection Detection | 2 | 新しい脅威タイプへの対応 |
-| **最高** | MFA Status Detection | 2 | 基本セキュリティ姿勢の可視化 |
+| **最高** | MFA Status Detection (Google Workspace) | 2 | 基本セキュリティ姿勢の可視化 |
 | 高 | Threat Detection Policies | 2 | 脅威検知の拡充 |
 | 高 | Shadow AI Blocklist | 2 | 生成AI利用リスク対策 |
 | 高 | Security Gaps | 3 | セキュリティ姿勢改善支援 |
 | 高 | Bulk Ticket Actions | 3 | 運用効率化 |
-| 高 | Remote Agent Uninstallation | 3 | デバイス管理の重要機能 |
 | 高 | Remote Shell (Linux) | 3 | インシデント対応能力 |
+| 高 | macOS Agent 3.7 | 4 | エンドポイント保護 |
+| 高 | Linux Agent 3.7 | 4 | エンドポイント保護 |
+| 高 | 日本機密データ検出 | 4 | コンプライアンス要件 |
 | 中 | その他の機能 | 3-4 | 補完的機能 |
 
 ---
@@ -401,11 +561,11 @@ Phase 5: 総合評価・報告書作成（推奨期間: 1週間）
 | 要素 | 要件 | 備考 |
 |------|------|------|
 | **Coroワークスペース** | 評価用ワークスペース | 全モジュール有効化 |
-| **Microsoft 365テナント** | テスト用テナント | MFA検証用権限設定 |
-| **Google Workspace** | テスト用ドメイン | MFA検証用 |
-| **Windowsデバイス** | Windows 10/11 | Agent 3.7テスト用 |
-| **macOSデバイス** | macOS最新版 | Agent 3.7テスト用 |
-| **Linuxデバイス** | Ubuntu/RHEL | Agent 3.7テスト用 |
+| **Google Workspace** | テスト用ドメイン | MFA検証用、DLP検証用 |
+| **macOSデバイス** | macOS 最新版 | Agent 3.7テスト用（1台以上） |
+| **Linuxデバイス** | Ubuntu 22.04 LTS / RHEL 9 | Agent 3.7テスト用（1台以上） |
+
+> **対象外**: Microsoft 365テナント、Windowsデバイス
 
 ### 5.2 テストアカウント要件
 
@@ -413,18 +573,20 @@ Phase 5: 総合評価・報告書作成（推奨期間: 1週間）
 |---------------|------|------|
 | MSP管理者 | 1 | グローバルビュー評価 |
 | ワークスペース管理者 | 2 | 管理機能評価 |
-| 一般ユーザー | 5 | エンドユーザー機能評価 |
-| MFA有効ユーザー | 3 | MFA検出評価 |
-| MFA無効ユーザー | 2 | MFA検出評価 |
+| 一般ユーザー（Google Workspace） | 5 | エンドユーザー機能評価 |
+| MFA有効ユーザー（Google Workspace） | 3 | MFA検出評価 |
+| MFA無効ユーザー（Google Workspace） | 2 | MFA検出評価 |
 
 ### 5.3 テストデータ要件
 
 | データ種別 | 内容 | 用途 |
 |------------|------|------|
-| UAE機密データ | ID、パスポート等サンプル | CMP-DATA-001 |
-| ブラジル機密データ | CPF、パスポート等サンプル | CMP-DATA-002 |
+| 日本機密データ | マイナンバー、運転免許証等サンプル | CMP-DATA-002 |
+| 英語圏機密データ | SSN、クレジットカード等サンプル | CMP-DATA-001 |
 | プロンプトインジェクションメール | 各種パターン | SEC-AI-001 |
 | 正常業務メール | AI関連正当メール | 誤検知確認 |
+
+> **対象外**: UAE機密データ、ブラジル機密データ
 
 ---
 
@@ -479,9 +641,10 @@ Phase 5: 総合評価・報告書作成（推奨期間: 1週間）
 | リスク | 影響度 | 対策 |
 |--------|--------|------|
 | テスト環境構築の遅延 | 高 | 早期着手、代替環境の準備 |
-| 権限不足による機能制限 | 中 | 事前の権限確認・取得 |
+| Google Workspace権限不足 | 中 | 事前の権限確認・取得 |
 | テストデータの不足 | 中 | データ生成ツールの活用 |
 | 機能の不具合発見 | 中 | Coroサポートへの報告・代替評価 |
+| macOS/Linux Agentの互換性問題 | 中 | 対応OSバージョンの事前確認 |
 
 ---
 
@@ -507,7 +670,7 @@ Phase 5: 総合評価・報告書作成（推奨期間: 1週間）
 - [ ] SEC-AI-001: Prompt Injection Detection
 - [ ] SEC-AI-002: Shadow AI Blocklist
 - [ ] SEC-AI-003: Coro AI Summary
-- [ ] SEC-AUTH-001: MFA Status Detection
+- [ ] SEC-AUTH-001: MFA Status Detection (Google Workspace)
 - [ ] SEC-AUTH-002: Threat Detection Policies
 
 ### A.2 管理機能チェックリスト
@@ -518,27 +681,51 @@ Phase 5: 総合評価・報告書作成（推奨期間: 1週間）
 - [ ] MGT-CON-004: Setup Hub
 - [ ] MGT-CON-005: Hierarchy Tree
 - [ ] MGT-CON-006: Security Gaps
-- [ ] MGT-DEV-001: Remote Agent Uninstallation
-- [ ] MGT-DEV-002: USB Lockdown Allowlisting
-- [ ] MGT-DEV-003: Agent Health Filter
-- [ ] MGT-DEV-004: Remote Shell (Linux)
+- [ ] MGT-DEV-001: Agent Health Filter (macOS/Linux)
+- [ ] MGT-DEV-002: Remote Shell (Linux)
+- [ ] MGT-DEV-003: Scheduled Malware Scan (macOS)
+- [ ] MGT-DEV-004: Disable Protection (Linux)
 
 ### A.3 コンプライアンス機能チェックリスト
 
-- [ ] CMP-DATA-001: UAE Sensitive Data
-- [ ] CMP-DATA-002: Brazil Sensitive Data
+- [ ] CMP-DATA-001: 英語圏機密データ検出
+- [ ] CMP-DATA-002: 日本機密データ検出
 - [ ] CMP-DATA-003: Unified Ticket Consolidation
-- [ ] CMP-LOC-001: French (Canada) Support
-- [ ] CMP-LOC-002: SAT Multi-language
+- [ ] CMP-LOC-001: 英語UI
+- [ ] CMP-LOC-002: 日本語対応確認
 
 ### A.4 統合機能チェックリスト
 
-- [ ] INT-CLOUD-001: M365 MFA Integration
-- [ ] INT-CLOUD-002: GWS MFA Integration
-- [ ] INT-CLOUD-003: Disconnected Status
-- [ ] INT-AGT-001: Windows Agent 3.7
-- [ ] INT-AGT-002: macOS Agent 3.7
-- [ ] INT-AGT-003: Linux Agent 3.7
+- [ ] INT-CLOUD-001: Google Workspace MFA Integration
+- [ ] INT-CLOUD-002: Google Workspace Connection
+- [ ] INT-CLOUD-003: Google Drive DLP
+- [ ] INT-CLOUD-004: Gmail Protection
+- [ ] INT-AGT-001: macOS Agent 3.7
+- [ ] INT-AGT-002: Linux Agent 3.7
+
+---
+
+## 付録B: 評価対象外項目一覧
+
+以下の項目は環境制約または要件外のため、本評価の対象外とします。
+
+### B.1 環境制約による対象外
+
+| 項目 | 理由 |
+|------|------|
+| Microsoft 365 MFA Integration | Microsoft 365環境なし |
+| Windows Agent 3.7 | Windowsデバイスなし |
+| Remote Agent Uninstallation (Windows) | Windowsデバイスなし |
+| USB Lockdown Allowlisting | Windows専用機能 |
+
+### B.2 要件外による対象外
+
+| 項目 | 理由 |
+|------|------|
+| UAE Sensitive Data Detection | 英語圏/日本のみ対象 |
+| Brazil Sensitive Data Detection | 英語圏/日本のみ対象 |
+| French (Canada) Support | 英語/日本語のみ対象 |
+| SAT Multi-language | 英語/日本語のみ対象 |
 
 ---
 
@@ -552,3 +739,4 @@ Phase 5: 総合評価・報告書作成（推奨期間: 1週間）
 | 版 | 日付 | 変更内容 | 作成者 |
 |----|------|----------|--------|
 | 1.0 | 2026-01-22 | 初版作成 | - |
+| 1.1 | 2026-01-22 | 環境制約条件を反映（Google Workspace/macOS/Linux限定、英語圏・日本のみ） | - |

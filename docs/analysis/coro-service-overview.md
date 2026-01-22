@@ -75,7 +75,20 @@
 
 ## 3. 管理コンソール構造
 
-### 3.1 ビュー階層
+### 3.1 Actionboardダッシュボード
+
+以下はCoroコンソールのActionboardダッシュボードの画面です：
+
+![Actionboard Dashboard](../../img/actionboard-dashboard.png)
+
+**画面の主要要素**:
+- **Open Tickets**: オープンチケット数とカテゴリ別内訳
+- **Workspace Health Score**: ワークスペースの健全性スコア（0-100）
+- **Security Gaps**: セキュリティギャップの検出状況
+- **Subscription Overview**: 各モジュールの有効/無効状態
+- **モジュール別ステータス**: Cloud Security、Email Security、EDR等の状態
+
+### 3.2 ビュー階層
 
 ```
 ┌─────────────────────────────────────────┐
@@ -91,7 +104,7 @@
 └─────────────────────────────────────────┘
 ```
 
-### 3.2 主要UI要素
+### 3.3 主要UI要素
 
 | 要素 | 説明 |
 |------|------|
@@ -101,6 +114,22 @@
 | **Devices** | 保護対象デバイス一覧 |
 | **Setup Hub** | 新規ワークスペースのオンボーディング |
 | **Coro Insights** | 分析・レポート機能 |
+
+### 3.4 通知設定と脅威タイプ
+
+以下は通知設定画面で確認できる脅威タイプの一覧です：
+
+![Notification Settings - Threat Types](../../img/notification-settings-threat-types.png)
+
+**モジュール別の検知可能な脅威タイプ**:
+
+| モジュール | 脅威タイプ |
+|------------|------------|
+| **Cloud Security** | Abnormal Admin Activity, Access Permissions Violation, Impossible Traveler, Malware in Cloud Drive, Mass Data Deletion, Mass Data Download, Suspected Bot Attacks, Suspected Identity Compromise |
+| **Email Security** | Blocklisted Sender, Brand Impersonation, Domain Spoofing, Malware in Email Attachment, **Prompt Injection**, Spam, Suspicious Content, User Impersonation 他 |
+| **Endpoint Security** | Endpoint Vulnerability, Forbidden Wi-Fi Connection, Malware on Endpoint, WiFi Phishing |
+| **Data Governance** | Cloud Share Containing Sensitive Data, Email Containing Sensitive Data, Endpoint Drive Containing Sensitive Data |
+| **EDR** | Command and Control, Credential Access, Defense Evasion, Discovery, Execution, Initial Access, Persistence, Privilege Escalation |
 
 ---
 
